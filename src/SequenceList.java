@@ -9,21 +9,23 @@ public class SequenceList<T> implements Iterable<T>{
         this.array=(T[])new Object[capacity];
         this.N=0;
     }
-
+    //clear array
     public void clear(){
         this.N=0;
     }
-
+    //check whether the array is empty
     public boolean isEmpty(){
         return N==0;
     }
     public int length(){
         return N;
     }
+    //get element by index
     public T getByIndex(int i){
         return array[i];
     }
 
+    //append element
     public void insert(T t){
         if(N==array.length){
             resize(2* array.length);
@@ -31,6 +33,8 @@ public class SequenceList<T> implements Iterable<T>{
         array[N++]=t;
 
     }
+
+    //insert element to certain place
     public void insert(int i, T t){
         if(N==array.length){
             resize(2* array.length);
@@ -43,6 +47,8 @@ public class SequenceList<T> implements Iterable<T>{
 
         array[i]=t;
     }
+
+    //remove element
     public T remove(int i){
 
         T current = array[i];
@@ -55,6 +61,8 @@ public class SequenceList<T> implements Iterable<T>{
         }
         return current;
     }
+
+    //get the index of an element
     public int indexOf(T t){
         for(int i=0;i<N;i++){
             if(array[i].equals(t)){
@@ -63,6 +71,7 @@ public class SequenceList<T> implements Iterable<T>{
         }
         return -1;
     }
+
     public void resize(int newSize){
         T[] temp = array;
         array=(T[])new Object[newSize];
