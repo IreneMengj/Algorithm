@@ -65,8 +65,32 @@ public class LinkList<T> {
         N++;
     }
     public T remove(int i){
-        //fin
-        return null;
+        //find the node at i-1
+        Node pre = head;
+        for(int index=0; index<i;i++){
+            pre=pre.next;
+        }
+        //find the node at i
+        Node curr = pre.next;
+        //find the node at i+1
+        Node next = curr.next;
+
+        next=pre.next;
+        N--;
+        return curr.item;
+    }
+    //find the index when t first comes out
+    public int indexOf(T t){
+        //find every node starting from head
+        Node n = head;
+        for(int i=0; n.next!=null;i++){
+            n=n.next;
+            if(n.item.equals(t)){
+                return i;
+            }
+        }
+        return -1;
+
     }
 
 
