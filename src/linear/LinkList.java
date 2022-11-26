@@ -3,9 +3,12 @@ package linear;
 
 import sun.tools.tree.Node;
 
+import java.util.Iterator;
+
 public class LinkList<T> {
     private Node head;
     private int N;
+
 
     private class Node{
         T item;

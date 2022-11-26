@@ -1,3 +1,5 @@
+package linear;
+
 import java.util.Iterator;
 
 public class SequenceList<T> implements Iterable<T>{
