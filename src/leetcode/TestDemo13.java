@@ -3,9 +3,7 @@ package leetcode;
 645. Set Mismatch
  */
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class TestDemo13 {
     public static void main(String[] args) {
@@ -39,6 +37,7 @@ public class TestDemo13 {
             else if(nums[i+1]-nums[i]>1){
                 num[1]=nums[i+1]-1;
             }
+
 
         }
 
