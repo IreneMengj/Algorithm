@@ -5,9 +5,32 @@ import sun.tools.tree.Node;
 
 import java.util.Iterator;
 
-public class LinkList<T> {
+public class LinkList<T> implements Iterable<T> {
     private Node head;
     private int N;
+
+    @Override
+    public Iterator<T> iterator() {
+        return new TIterator();
+    }
+    private class TIterator implements Iterator{
+        private LinkList.Node n;
+
+        public TIterator() {
+            this.n = head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return n.next!=null;
+        }
+
+        @Override
+        public Object next() {
+            n=n.next;
+            return  n.item;
+        }
+    }
 
 
     private class Node{
@@ -94,6 +117,24 @@ public class LinkList<T> {
         }
         return -1;
 
+    }
+
+    public void reverse(){
+        if(isEmpty()){
+            return;
+        }
+        reverse(head.next);
+    }
+
+    public Node reverse(Node curr){
+        if(curr.next==null){
+            head.next=curr;
+            return curr;
+        }
+        Node pre = reverse(curr.next);
+        pre.next=curr;
+        curr.next=null;
+        return curr;
     }
 
 
