@@ -22,7 +22,7 @@ public class Merge {
     }
 
     private static void sort(Comparable[] a,int start,int end){
-        if(start<=end){
+        if(start>=end){
             return;
         }
         //divide into two groups
@@ -56,7 +56,7 @@ public class Merge {
             assist[i++]=a[p2++];
         }
         //copy elements from assistant to original array
-        for(int index=start;start<end;index++){
+        for(int index=start;index<=end;index++){
             a[index]=assist[index];
         }
     }
