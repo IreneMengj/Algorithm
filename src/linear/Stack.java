@@ -2,10 +2,14 @@ package linear;
 
 import sun.tools.tree.Node;
 
+import java.util.Iterator;
+
 public class Stack<T> {
     private Node head;
     //the number of elements
     private int N;
+
+
 
     private class Node{
         public T item;
@@ -41,7 +45,7 @@ public class Stack<T> {
         }
         head.next=oldFirst.next;
         N--;
-        return null;
+        return oldFirst.item;
     }
 
 }
