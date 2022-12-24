@@ -3,6 +3,7 @@ package leetcode;
 import java.util.HashMap;
 import java.util.Map;
 //287. Find the Duplicate Number
+//runtime beats 41%;Memory beats 95%
 public class TestDemo75 {
     public static void main(String[] args) {
 
