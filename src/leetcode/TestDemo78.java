@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class TestDemo78 {
     public static void main(String[] args) {
+
         String pattern = "abba";
         String s = "dog cat cat dog";
         boolean b = wordPattern(pattern,s);
