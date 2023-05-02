@@ -3,11 +3,11 @@ package dataStructure;
 public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T>{
     protected BTNode<T> root;
     @Override
-    public void insert(T ele) {
+    public void insert(T elem) {
         if(isEmpty()){
-            root=new BTNode<>(ele);
+            root=new BTNode<>(elem);
         }else{
-            insertNode(ele,root);
+            insertNode(elem,root);
         }
     }
     private void insertNode(T ele, BTNode<T> current){
