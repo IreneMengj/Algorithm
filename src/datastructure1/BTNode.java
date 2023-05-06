@@ -1,9 +1,5 @@
-package dataStructure;
-/*
- This is the node that we are using for binary tree
- we know that we need some type of data
- we need a left node and a right node
- */
+package datastructure1;
+
 public class BTNode<T> {
     protected T element;
     protected BTNode<T> left;
@@ -16,7 +12,9 @@ public class BTNode<T> {
     @Override
     public String toString() {
         return "BTNode{" +
-                "element=" + element  +
+                "element=" + element +
+                ", left=" + left +
+                ", right=" + right +
                 '}';
     }
 }

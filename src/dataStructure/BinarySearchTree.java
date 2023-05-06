@@ -1,162 +1,275 @@
 package dataStructure;
 
-public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T>{
+
+public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T> {
+
     protected BTNode<T> root;
-    @Override
+
+    //LST < RST at all the stages
+
     public void insert(T elem) {
         if(isEmpty()){
-            root=new BTNode<>(elem);
-        }else{
+            root = new BTNode<>(elem);
+        }else {
             insertNode(elem,root);
         }
     }
-    private void insertNode(T ele, BTNode<T> current){
-        if(ele.compareTo(current.element)==-1){
-            if(current.left==null){
-                current.left=new BTNode<>(ele);
-            }else{
-                insertNode(ele,current.left);
+
+    private void insertNode(T elem, BTNode<T> current){
+        //find a place to insert the element
+        //compare the element with the root
+        if(elem.compareTo(current.element)==-1){
+            //add to the left
+            if(current.left == null){
+                current.left = new BTNode<>(elem);
+            } else {
+                //recurse down the sub-tree rooted at current.left
+                insertNode(elem,current.left);
             }
-        }else{
-            if(current.right==null){
-                current.right=new BTNode<>(ele);
-            }else{
-                insertNode(ele,current.right);
+            // similarly for the right
+        }else {
+            if(current.right == null){
+                current.right = new BTNode<>(elem);
+            } else {
+                //recurse down the sub-tree rooted at current.left
+                insertNode(elem,current.right);
             }
         }
     }
 
-    @Override
     public boolean isEmpty() {
-        return root==null;
+        //empty tree
+        return root == null;
     }
 
-    @Override
+    //lowest values first
     public void inOrder() {
         inOrder(root);
     }
+
     private void inOrder(BTNode<T> current){
-        if(current==null){
+        //base case
+        if(current == null){
             return;
         }
         inOrder(current.left);
+        System.out.println(current);
         inOrder(current.right);
     }
 
-    @Override
     public int size() {
         return size(root);
     }
+
     private int size(BTNode<T> current){
-        if(current==null){
+        if(current == null){
             return 0;
-        }else{
-            return 1+size(current.left)+size(current.right);
+        } else {
+            return 1+size(current.left) + size(current.right);
         }
     }
 
-
-    @Override
     public T findMax() {
         if(isEmpty()){
-            return null;
-        }else{
+            throw null;
+        } else{
             return findMax(root);
         }
     }
 
+    //bigger elements are in right subtree
     private T findMax(BTNode<T> current){
-        if(current.right==null){
+        //base case
+        if(current.right ==null){
             return current.element;
         }else{
             return findMax(current.right);
         }
     }
 
-    @Override
     public T findMin() {
         if(isEmpty()){
-            return null;
+            throw null;
         }else{
             return findMin(root);
         }
     }
     private T findMin(BTNode<T> current){
-        if(current.left==null){
+        //base case
+        if(current.left == null){
             return current.element;
-        }else{
+        } else {
             return findMin(current.left);
         }
     }
 
-    @Override
-    public boolean contains(T ele) {
-        return contains(ele,root);
+    public boolean contains(T element) {
+        return contains(element, root);
     }
-    private boolean contains(T element,BTNode<T> current){
-        if(current==null){
+
+    private boolean contains(T element, BTNode<T> current){
+        String currentPos = (current == null ? "NULL" : current.element.toString());
+        System.out.println("Searching for " + element + " currently at " + currentPos);
+        if (current == null){
             return false;
         }
-        if(element.compareTo(current.element)==0){
+
+        if (element.compareTo(current.element) == 0){
+            System.out.println("We found equality");
             return true;
-        }else if(element.compareTo(current.element)==-1){
-            return contains(element,current.left);
-        }else{
-            return contains(element,current.right);
+        } else if (element.compareTo(current.element) <= -1){
+            System.out.println("We are going to the left");
+            return contains(element, current.left);
+        } else {
+            System.out.println("Going to the right");
+            return contains(element, current.right);
         }
     }
 
-    @Override
-    public boolean remove(T ele) {
-        BTNode<T> toRemove = findNode(ele);
-        if(toRemove==null){
+    private BTNode<T> findNode(T elem){
+        return findNode(elem, root);
+    }
+
+    private BTNode<T> findNode(T elem, BTNode<T> current){
+        if (current == null){
+            return null;
+        }
+        if (current.element.equals(elem)){
+            return current;
+        } else if (current.element.compareTo(elem) == -1){//new is bigger
+            return findNode(elem, current.right);
+        } else {
+            return findNode(elem, current.left);
+        }
+    }
+
+
+    public boolean remove(T element) {
+        // we need to locate the node which we must remove
+        BTNode<T> toRemove = findNode(element);
+        if (toRemove == null){
+            System.out.println("not found");
             return false;
         }
-        BTNode<T> parent=findParent(ele);
+        System.out.println("toRemove = " + toRemove);
+        // we need to find its parent as well
+        BTNode<T> parent = findParent(element);
+        System.out.println("parent = " + parent);
 
+        // to do the simplest case which is the removal of a leaf node
+        if (toRemove.left == null && toRemove.right == null){
+            // determine which child it is
+            if (toRemove.element.compareTo(parent.element) == -1){
+                parent.left = null;
+            } else {
+                parent.right = null;
+            }
+            return true;
+        } else if (toRemove.left != null && toRemove.right == null){
+            // in this case the node has a left child but no right child.
+            //its important that we are not getting rid of the Nodes just changing the
+            //data piece of the object...
+            if (toRemove.element.compareTo(parent.element) == -1){
+                // the removed node is the left child
+                parent.left = toRemove.left;
+            } else {
+                // it's the right child
+                parent.right = toRemove.left;
+            }
+            return true;
+        } else if (toRemove.left == null && toRemove.right != null){
+            if (toRemove.element.compareTo(parent.element) == -1){
+                parent.left = toRemove.right;
+            } else {
+                parent.right = toRemove.right;
+            }
+            return true;
+        } else if (toRemove.left != null && toRemove.right != null){
+            // it has both a left and right child
+            // find the max value in the left subtree rooted at the current node
+            // or the minimum value of the right subTree...
+            T minValue = findMin(toRemove.right);
+            BTNode<T> replacement = findNode(minValue);
+            BTNode<T> replacementParent = findParent(minValue);
+            System.out.println("replacementParent = " + replacementParent);
 
+            /*
+                T maxValue = findMax(toRemove.right);
+                System.out.println("maxValue = " + maxValue);
+                BTNode<T> replacement = findNode(maxValue);
+                BTNode<T> replacementParent = findParent(maxValue);
+          */
 
-
-
-
+            // we dont actually change the value of the Node we simply
+            // change the value of the contents...
+            replacementParent.left = null;
+            toRemove.element = replacement.element;
+            return true;
+        }
+        System.out.println("parent = " + parent);
         return false;
     }
-    private BTNode<T> findNode(T ele){
-        return findNode(ele,root);
+    private BTNode<T> findParent(T element) {
+        return findParent(element, root);
     }
-    private BTNode<T> findNode(T element,BTNode<T> current){
-        if(current==null){
+
+    private BTNode<T> findParent(T element, BTNode<T> current) {
+        // special case
+        if (element.equals(root.element)){
             return null;
         }
-        if(element.compareTo(current.element)==-1){
-            return findNode(element,current.left);
-        }else{
-            return findNode(element,current.right);
-        }
-    }
-    private BTNode<T> findParent(T element){
-        return findParent(element,root);
-    }
-    private BTNode<T> findParent(T element,BTNode<T> current){
-        if(element.equals(root.element)){
-            return null;
-        }
-        if(element.compareTo(current.element)==-1){
-            if(current.left==null){
+        if (element.compareTo(current.element) == -1){
+            if (current.left == null){
+                // not in the tree
                 return null;
-            }else if(element.compareTo(current.left.element)==0){
+            } else if (element.compareTo(current.left.element) == 0){
                 return current;
-            }else{
-               return findParent(element,current.left);
+            } else {
+                return findParent(element, current.left);
             }
-        }else{
-            if(current.right==null){
+        } else {
+            if (current.right == null){
                 return null;
-            }else if(element.compareTo(current.right.element)==0){
+            } else if (element.compareTo(current.right.element) == 0) {
                 return current;
-            }else{
-                return findParent(element,current.right);
+            } else {
+                return findParent(element, current.right);
             }
         }
     }
+
+    public static void main(String[] args){
+        BinaryTree<Integer> numbers = new BinarySearchTree<>();
+        numbers.insert(12);
+        numbers.insert(4);
+        numbers.insert(6);
+        numbers.insert(5);
+        numbers.insert(8);
+        numbers.insert(34);
+        numbers.insert(100);
+        numbers.insert(2);
+
+
+        System.out.println("------------------");
+        numbers.inOrder();
+
+        System.out.println("------------------");
+        System.out.println("Size of BST: "+ numbers.size());
+
+        System.out.println("------------------");
+        System.out.println("Max elem of BST: "+ numbers.findMax());
+
+
+        System.out.println("------------------");
+        System.out.println("Min elem of BST: "+ numbers.findMin());
+
+        System.out.println("______________________");
+        numbers.remove(4);
+
+        System.out.println("______________________");
+        numbers.inOrder();
+
+        System.out.println("______________________");
+    }
+
 }
